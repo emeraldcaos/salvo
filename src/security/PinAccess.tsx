@@ -7,14 +7,16 @@ import {
   hasPinConfiguration,
   unlockPinKey,
 } from './pinKey'
+import { EncryptedToolkitStore } from './encryptedToolkitStore'
 
 interface PinAccessProps {
   messages: LocaleMessages['pin']
+  encryptionKey: CryptoKey | null
+  onKeyChange: (key: CryptoKey | null) => void
 }
 
-function PinAccess({ messages }: PinAccessProps) {
+function PinAccess({ messages, encryptionKey, onKeyChange }: PinAccessProps) {
   const [configured, setConfigured] = useState(hasPinConfiguration)
-  const [key, setKey] = useState<CryptoKey | null>(null)
   const [pin, setPin] = useState('')
   const [feedback, setFeedback] = useState('')
   const [isWorking, setIsWorking] = useState(false)
@@ -47,8 +49,10 @@ function PinAccess({ messages }: PinAccessProps) {
 
       if (result.ok) {
         setConfigured(true)
-        setKey(result.key)
         setPin('')
+        const store = await EncryptedToolkitStore.open(result.key)
+        store.close()
+        onKeyChange(result.key)
         setFeedback('')
         return
       }
@@ -74,6 +78,9 @@ function PinAccess({ messages }: PinAccessProps) {
         unavailable: messages.unavailable,
       }
       setFeedback(errorCopy[result.reason])
+    } catch {
+      setPin('')
+      setFeedback(messages.unavailable)
     } finally {
       setIsWorking(false)
     }
@@ -82,19 +89,19 @@ function PinAccess({ messages }: PinAccessProps) {
   return (
     <section className="pin-access" aria-labelledby="pin-access-title">
       <h2 id="pin-access-title">
-        {key
+        {encryptionKey
           ? messages.activeTitle
           : configured
             ? messages.unlockTitle
             : messages.setupTitle}
       </h2>
-      {key ? (
+      {encryptionKey ? (
         <div className="pin-status">
           <p role="status">{messages.unlocked}</p>
           <button
             className="pin-action"
             type="button"
-            onClick={() => setKey(null)}
+            onClick={() => onKeyChange(null)}
           >
             {messages.lockAction}
           </button>
