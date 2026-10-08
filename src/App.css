@@ -156,6 +156,110 @@
   max-width: 560px;
 }
 
+.pin-access {
+  border-block: 1px solid var(--border);
+  margin-bottom: 48px;
+  padding: 20px 0;
+  text-align: left;
+}
+
+.pin-access h2 {
+  color: var(--text-h);
+  font-size: 20px;
+  margin: 0 0 16px;
+}
+
+.pin-form {
+  display: grid;
+  gap: 0;
+  margin-top: 24px;
+}
+
+.pin-form-row {
+  align-items: end;
+  display: grid;
+  gap: 12px;
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+
+.pin-field {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+}
+
+.pin-field label {
+  color: var(--text-h);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.pin-field input {
+  background: var(--bg);
+  border: 2px solid var(--text-h);
+  border-radius: 4px;
+  color: var(--text-h);
+  font: inherit;
+  font-size: 18px;
+  letter-spacing: 0.15em;
+  min-height: 48px;
+  padding: 0 12px;
+  width: 100%;
+}
+
+.pin-field input:focus-visible,
+.pin-action:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.pin-action {
+  background: var(--text-h);
+  border: 2px solid var(--text-h);
+  border-radius: 4px;
+  color: var(--bg);
+  cursor: pointer;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 700;
+  min-height: 48px;
+  min-width: 120px;
+  padding: 0 16px;
+  white-space: nowrap;
+}
+
+.pin-action:disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.pin-guidance,
+.pin-notice,
+.pin-feedback {
+  font-size: 14px;
+  margin: 10px 0 0;
+}
+
+.pin-guidance {
+  margin-top: 8px;
+}
+
+.pin-feedback[role='alert'] {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.pin-status {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.pin-status p {
+  margin: 0;
+}
+
 @media (max-width: 600px) {
   .app-header {
     flex-wrap: wrap;
@@ -206,7 +310,8 @@
   }
 
   .app-header,
-  .pwa-notice {
+  .pwa-notice,
+  .pin-access {
     border-width: 2px;
   }
 }
@@ -214,6 +319,8 @@
 @media (forced-colors: active) {
   .quick-exit,
   .language-control select,
+  .pin-field input,
+  .pin-action,
   .pwa-actions button {
     border: 1px solid ButtonText;
   }

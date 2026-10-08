@@ -1,4 +1,10 @@
-import { fireEvent, render, screen, within } from '@testing-library/react'
+import {
+  cleanup,
+  fireEvent,
+  render,
+  screen,
+  within,
+} from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import App from './App'
 import { resolveLanguage } from './i18n'
@@ -27,6 +33,7 @@ describe('App', () => {
   })
 
   afterEach(() => {
+    cleanup()
     vi.unstubAllGlobals()
     document.documentElement.lang = ''
     document.title = ''
@@ -39,6 +46,20 @@ describe('App', () => {
       screen.getByRole('heading', { name: 'Clear support starts here.' }),
     ).toBeInTheDocument()
     expect(document.documentElement.lang).toBe('en')
+  })
+
+  it('shows the PIN limits and explains the key scope', () => {
+    const { container } = render(<App />)
+    const view = within(container)
+
+    expect(
+      view.getByRole('heading', { name: 'Create your PIN key' }),
+    ).toBeInTheDocument()
+    expect(view.getByLabelText('PIN')).toHaveAttribute('pattern', '[0-9]{8,12}')
+    expect(
+      view.getByText(/does not encrypt app content yet/),
+    ).toBeInTheDocument()
+    expect(view.getByText(/resets the delay/)).toBeInTheDocument()
   })
 
   it('switches all visible copy to Spanish', () => {

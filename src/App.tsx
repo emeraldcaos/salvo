@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useRegisterSW } from 'virtual:pwa-register/react'
 import { languages, resolveLanguage, translations } from './i18n'
 import type { Language } from './i18n'
+import PinAccess from './security/PinAccess'
 import './App.css'
 
 function App() {
@@ -90,6 +91,7 @@ function App() {
       )}
 
       <main className="welcome">
+        <PinAccess messages={messages.pin} />
         <p className="eyebrow">{messages.welcome.eyebrow}</p>
         <h1>{messages.welcome.title}</h1>
         <p className="welcome-copy">{messages.welcome.description}</p>
