@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/react'
+import { fireEvent, render, screen, within } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import App from './App'
 import { resolveLanguage } from './i18n'
@@ -27,6 +27,7 @@ describe('App', () => {
   })
 
   afterEach(() => {
+    vi.unstubAllGlobals()
     document.documentElement.lang = ''
     document.title = ''
   })
@@ -51,8 +52,22 @@ describe('App', () => {
       screen.getByRole('heading', { name: 'El apoyo claro empieza aquí.' }),
     ).toBeInTheDocument()
     expect(screen.getByLabelText('Idioma')).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: 'Salida rápida' })).toHaveAttribute(
+      'href',
+      '/neutral.html',
+    )
     expect(document.documentElement.lang).toBe('es')
     expect(document.title).toBe('Notas')
+  })
+
+  it('replaces the current page when quick exit is used', () => {
+    const replace = vi.fn()
+    vi.stubGlobal('location', { replace })
+    const { container } = render(<App />)
+
+    fireEvent.click(within(container).getByRole('link', { name: 'Quick exit' }))
+
+    expect(replace).toHaveBeenCalledWith('/neutral.html')
   })
 
   it('resolves regional locales and falls back to English', () => {

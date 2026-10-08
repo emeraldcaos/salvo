@@ -24,23 +24,35 @@ function App() {
     <div className="app-shell">
       <header className="app-header">
         <span className="brand">{messages.appName}</span>
-        <div className="language-control">
-          <label htmlFor="language-select">
-            {messages.languageSwitcher.label}
-          </label>
-          <select
-            id="language-select"
-            value={language}
-            onChange={(event) =>
-              setLanguage(resolveLanguage(event.target.value))
-            }
+        <div className="header-actions">
+          <div className="language-control">
+            <label htmlFor="language-select">
+              {messages.languageSwitcher.label}
+            </label>
+            <select
+              id="language-select"
+              value={language}
+              onChange={(event) =>
+                setLanguage(resolveLanguage(event.target.value))
+              }
+            >
+              {languages.map((option) => (
+                <option key={option} value={option}>
+                  {messages.languageSwitcher.languages[option]}
+                </option>
+              ))}
+            </select>
+          </div>
+          <a
+            className="quick-exit"
+            href={`${import.meta.env.BASE_URL}neutral.html`}
+            onClick={(event) => {
+              event.preventDefault()
+              window.location.replace(`${import.meta.env.BASE_URL}neutral.html`)
+            }}
           >
-            {languages.map((option) => (
-              <option key={option} value={option}>
-                {messages.languageSwitcher.languages[option]}
-              </option>
-            ))}
-          </select>
+            {messages.quickExit}
+          </a>
         </div>
       </header>
 

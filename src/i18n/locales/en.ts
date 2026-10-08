@@ -2,6 +2,7 @@ import type { LocaleMessages } from '../types'
 
 const en: LocaleMessages = {
   appName: 'Notes',
+  quickExit: 'Quick exit',
   languageSwitcher: {
     label: 'Language',
     languages: {

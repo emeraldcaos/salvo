@@ -1,5 +1,6 @@
 export interface LocaleMessages {
   appName: string
+  quickExit: string
   languageSwitcher: {
     label: string
     languages: Record<string, string>
