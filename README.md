@@ -33,9 +33,13 @@ The app uses the neutral **Notes** placeholder name and icon. On Android, open t
 
 New versions are downloaded in the background and offered in the app. The current version stays active until **Update now** is chosen, so dismissing an update does not replace the version available offline.
 
-## PIN key foundation
+## PIN key and encrypted toolkit storage
 
-The PIN creates a non-exportable AES-256-GCM key using Web Crypto PBKDF2-SHA-256 with 600,000 iterations and a random salt. The PIN is not saved. Browser storage holds only the salt and an encrypted key-check value; the derived key stays in memory until the user locks it or closes/reloads the app. PIN and key processing make no network requests. This foundation does not encrypt app content yet.
+The PIN creates a non-exportable AES-256-GCM key using Web Crypto PBKDF2-SHA-256 with 600,000 iterations and a random salt. The PIN is not saved. Browser storage holds only the salt and an encrypted key-check value; the derived key stays in memory until the user locks it or closes/reloads the app. PIN and key processing make no network requests.
+
+Toolkit data must use `EncryptedToolkitStore` in `src/security/encryptedToolkitStore.ts`; it encrypts JSON values and logical record IDs with AES-GCM before writing to IndexedDB. The database stores only ciphertext, authentication IVs, and random opaque record IDs. The unlocked key is available to app components through `usePinKey()` from `src/security/PinKeyContext.ts`. Do not store toolkit data in `localStorage` or write plaintext directly to IndexedDB.
+
+On database upgrade, version 1 records in the `salvo-toolkit` database's legacy `items` store (`{ id, value }` rows) are migrated to the encrypted store. The encrypted writes and clearing of the plaintext store happen in one IndexedDB transaction, so a failed migration keeps the original records. There is no prior toolkit database in the current app; the migration is defined for that legacy schema. Browser storage deletion is logical, not a guaranteed physical wipe of device storage.
 
 PINs must be 8 to 12 digits. After five incorrect attempts, the next attempt is delayed for 30 seconds; each further incorrect attempt doubles the delay, up to 15 minutes. A successful unlock clears the delay. The delay is stored in this browser and can be reset by clearing its site data, so it is not a strong defense against someone with access to browser storage. A numeric PIN can also be guessed offline if the stored key-check data is copied.
 
