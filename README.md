@@ -33,6 +33,12 @@ The app uses the neutral **Notes** placeholder name and icon. On Android, open t
 
 New versions are downloaded in the background and offered in the app. The current version stays active until **Update now** is chosen, so dismissing an update does not replace the version available offline.
 
+## PIN key foundation
+
+The PIN creates a non-exportable AES-256-GCM key using Web Crypto PBKDF2-SHA-256 with 600,000 iterations and a random salt. The PIN is not saved. Browser storage holds only the salt and an encrypted key-check value; the derived key stays in memory until the user locks it or closes/reloads the app. PIN and key processing make no network requests. This foundation does not encrypt app content yet.
+
+PINs must be 8 to 12 digits. After five incorrect attempts, the next attempt is delayed for 30 seconds; each further incorrect attempt doubles the delay, up to 15 minutes. A successful unlock clears the delay. The delay is stored in this browser and can be reset by clearing its site data, so it is not a strong defense against someone with access to browser storage. A numeric PIN can also be guessed offline if the stored key-check data is copied.
+
 ## Script policy
 
 Do not load JavaScript from third-party origins. Browser scripts must be served by this app and bundled from dependencies installed through npm. The Content Security Policy in `index.html` and `npm run check:scripts` enforce the rule for production and CI. External links are fine; external executable scripts are not.

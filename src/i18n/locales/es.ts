@@ -3,6 +3,32 @@ import type { LocaleMessages } from '../types'
 const es: LocaleMessages = {
   appName: 'Notas',
   quickExit: 'Salida rápida',
+  pin: {
+    setupTitle: 'Crea tu clave con PIN',
+    unlockTitle: 'Desbloquea tu clave con PIN',
+    activeTitle: 'Clave PIN activa',
+    inputLabel: 'PIN',
+    inputHint: 'Escribe de 8 a 12 dígitos.',
+    recoveryWarning: 'No podrás recuperar el PIN si lo olvidas.',
+    scopeNote:
+      'Esto crea una clave de cifrado. Aún no cifra el contenido de la aplicación.',
+    securityNote:
+      'La aplicación no guarda ni envía el PIN. La clave permanece en la memoria mientras esté desbloqueada.',
+    retryPolicy:
+      'Después de cinco PIN incorrectos, espera 30 segundos. Cada intento incorrecto adicional duplica la espera, hasta 15 minutos. Si borras los datos del sitio, se reinicia la espera.',
+    createAction: 'Crear clave',
+    unlockAction: 'Desbloquear',
+    lockAction: 'Bloquear clave',
+    unlocked: 'La clave está desbloqueada en la memoria durante esta sesión.',
+    invalidPin: 'Escribe de 8 a 12 dígitos.',
+    incorrectPin: 'Ese PIN no desbloqueó la clave. Inténtalo de nuevo.',
+    lockout:
+      'Hubo demasiados intentos incorrectos. Inténtalo de nuevo en {seconds} segundos.',
+    alreadyConfigured: 'Ya existe una clave con PIN en este dispositivo.',
+    notConfigured: 'No hay una clave con PIN en este dispositivo.',
+    corruptRecord: 'No se pueden leer los datos guardados de la clave.',
+    unavailable: 'El almacenamiento local seguro no está disponible.',
+  },
   languageSwitcher: {
     label: 'Idioma',
     languages: {
