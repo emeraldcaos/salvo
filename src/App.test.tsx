@@ -3,11 +3,15 @@ import {
   fireEvent,
   render,
   screen,
+  waitFor,
   within,
 } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import App from './App'
 import { resolveLanguage } from './i18n'
+import { createPinKey } from './security/pinKey'
+import { navigate } from './routing/usePath'
+import { routes } from './routing/routes'
 
 const pwaState = vi.hoisted(() => ({
   offlineReady: false,
@@ -25,21 +29,39 @@ vi.mock('virtual:pwa-register/react', () => ({
   }),
 }))
 
+async function unlockWithPin(pin = '12345678') {
+  const submit = screen.getByRole('button', {
+    name: /^(Create key|Unlock)$/,
+  })
+  fireEvent.change(screen.getByLabelText('PIN'), {
+    target: { value: pin },
+  })
+  fireEvent.click(submit)
+  await waitFor(() => {
+    expect(screen.getByRole('heading', { name: 'Home' })).toBeInTheDocument()
+  })
+}
+
 describe('App', () => {
   beforeEach(() => {
     pwaState.offlineReady = false
     pwaState.needRefresh = false
+    localStorage.clear()
+    window.history.replaceState(null, '', '/')
     vi.clearAllMocks()
   })
 
   afterEach(() => {
     cleanup()
     vi.unstubAllGlobals()
+    localStorage.clear()
+    window.history.replaceState(null, '', '/')
     document.documentElement.lang = ''
     document.title = ''
   })
 
-  it('renders English by default', () => {
+  it('sends first run to Welcome', () => {
+    window.history.replaceState(null, '', '/home')
     render(<App />)
 
     expect(
@@ -83,7 +105,13 @@ describe('App', () => {
 
   it('replaces the current page when quick exit is used', () => {
     const replace = vi.fn()
-    vi.stubGlobal('location', { replace })
+    vi.stubGlobal('location', {
+      ...window.location,
+      replace,
+      pathname: '/',
+      search: '',
+      hash: '',
+    })
     const { container } = render(<App />)
 
     fireEvent.click(within(container).getByRole('link', { name: 'Quick exit' }))
@@ -109,5 +137,66 @@ describe('App', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Update now' }))
 
     expect(pwaState.updateServiceWorker).toHaveBeenCalledWith(true)
+  })
+
+  it('shows the six-tab bar with accessible names after unlock', async () => {
+    render(<App />)
+    await unlockWithPin()
+
+    const nav = screen.getByRole('navigation', { name: 'Main' })
+    for (const name of [
+      'Home',
+      'Plan',
+      'Help',
+      'Alerts',
+      'Rights',
+      'Settings',
+    ]) {
+      expect(within(nav).getByRole('link', { name })).toBeInTheDocument()
+    }
+
+    fireEvent.click(within(nav).getByRole('link', { name: 'Plan' }))
+    expect(screen.getByRole('heading', { name: 'Plan' })).toBeInTheDocument()
+    expect(within(nav).getByRole('link', { name: 'Plan' })).toHaveAttribute(
+      'aria-current',
+      'page',
+    )
+  })
+
+  it('blocks every route while locked', async () => {
+    const created = await createPinKey('12345678')
+    expect(created.ok).toBe(true)
+
+    window.history.replaceState(null, '', '/plan')
+    render(<App />)
+
+    await waitFor(() => {
+      expect(screen.getByText('Enter your PIN')).toBeInTheDocument()
+    })
+    expect(screen.queryByRole('navigation', { name: 'Main' })).toBeNull()
+
+    navigate(routes.verifier)
+    await waitFor(() => {
+      expect(screen.getByText('Enter your PIN')).toBeInTheDocument()
+    })
+    expect(screen.queryByRole('heading', { name: 'Verifier queue' })).toBeNull()
+  })
+
+  it('keeps the verifier route out of the tab bar', async () => {
+    render(<App />)
+    await unlockWithPin()
+
+    const nav = screen.getByRole('navigation', { name: 'Main' })
+    expect(
+      within(nav).queryByRole('link', { name: 'Verifier queue' }),
+    ).toBeNull()
+
+    navigate(routes.verifier)
+    await waitFor(() => {
+      expect(
+        screen.getByRole('heading', { name: 'Verifier queue' }),
+      ).toBeInTheDocument()
+    })
+    expect(screen.queryByRole('navigation', { name: 'Main' })).toBeNull()
   })
 })

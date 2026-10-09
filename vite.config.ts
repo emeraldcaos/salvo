@@ -15,8 +15,8 @@ export default defineConfig({
         start_url: './',
         scope: './',
         display: 'standalone',
-        background_color: '#fbfcf8',
-        theme_color: '#fbfcf8',
+        background_color: '#0E1A24',
+        theme_color: '#0E1A24',
         icons: [
           {
             src: 'pwa-192x192.png',
@@ -43,7 +43,7 @@ export default defineConfig({
         skipWaiting: false,
         cleanupOutdatedCaches: true,
         navigateFallback: 'index.html',
-        globPatterns: ['**/*.{html,css,js,svg,png,webmanifest}'],
+        globPatterns: ['**/*.{html,css,js,svg,png,woff2,webmanifest}'],
       },
     }),
   ],

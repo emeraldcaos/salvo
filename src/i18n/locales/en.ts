@@ -57,6 +57,86 @@ const en: LocaleMessages = {
     description:
       'A place for practical information for immigrants and their communities.',
   },
+  lock: {
+    prompt: 'Enter your PIN',
+    forgotPin: 'Forgot your PIN? Data cannot be recovered.',
+  },
+  nav: {
+    label: 'Main',
+    home: 'Home',
+    plan: 'Plan',
+    help: 'Help',
+    alerts: 'Alerts',
+    rights: 'Rights',
+    settings: 'Settings',
+  },
+  screens: {
+    home: {
+      title: 'Home',
+      description: 'Your emergency tools and plan summary will live here.',
+    },
+    plan: {
+      title: 'Plan',
+      description: 'Your on-device checklist will live here.',
+    },
+    help: {
+      title: 'Find help',
+      description: 'The local help directory will live here.',
+    },
+    alerts: {
+      title: 'Alerts',
+      description: 'Nearby verified alerts will live here.',
+    },
+    rights: {
+      title: 'Know your rights',
+      description: 'Rights scripts and the officer card will live here.',
+    },
+    settings: {
+      title: 'Settings and privacy',
+      description: 'PIN, wipe, and privacy controls will live here.',
+    },
+    verifier: {
+      title: 'Verifier queue',
+      description:
+        'Invite-only report review. This route is not in the tab bar.',
+    },
+  },
+  gallery: {
+    open: 'Open component gallery',
+    title: 'Component gallery',
+    intro:
+      'Shared design tokens and UI pieces from the Safety PWA mockups. All assets load from this app.',
+    tokens: 'Color tokens',
+    buttons: 'Buttons',
+    badges: 'Badges',
+    chips: 'Chips',
+    listRows: 'List rows',
+    progress: 'Progress bar',
+    keypad: 'Keypad',
+    icons: 'Line icons',
+    primary: 'Primary action',
+    ghost: 'Ghost action',
+    danger: 'Wipe all data now',
+    linkStyled: 'Link styled as a button',
+    okBadge: 'Done',
+    warnBadge: 'To do',
+    chipLegal: 'Legal aid',
+    chipFood: 'Food',
+    chipClinic: 'Clinic',
+    rowDone: 'Emergency contacts',
+    rowTodo: 'Medications',
+    done: 'Done',
+    todo: 'To do',
+    progressLabel: 'Your plan',
+    pinDotsLabel: 'PIN length so far',
+    deleteLabel: 'Delete',
+    ink: 'Ink ground',
+    mint: 'Mint primary',
+    amber: 'Amber caution',
+    cardSampleTitle: 'Card',
+    cardSampleBody: 'Raised surface on ink.',
+    back: 'Back',
+  },
 }
 
 export default en

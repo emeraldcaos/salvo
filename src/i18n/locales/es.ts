@@ -58,6 +58,86 @@ const es: LocaleMessages = {
     description:
       'Un espacio con información práctica para las personas inmigrantes y sus comunidades.',
   },
+  lock: {
+    prompt: 'Escribe tu PIN',
+    forgotPin: '¿Olvidaste tu PIN? No se pueden recuperar los datos.',
+  },
+  nav: {
+    label: 'Principal',
+    home: 'Inicio',
+    plan: 'Plan',
+    help: 'Ayuda',
+    alerts: 'Alertas',
+    rights: 'Derechos',
+    settings: 'Ajustes',
+  },
+  screens: {
+    home: {
+      title: 'Inicio',
+      description: 'Aquí estarán tus herramientas de emergencia y tu plan.',
+    },
+    plan: {
+      title: 'Plan',
+      description: 'Aquí estará tu lista de preparación en el dispositivo.',
+    },
+    help: {
+      title: 'Buscar ayuda',
+      description: 'Aquí estará el directorio de ayuda local.',
+    },
+    alerts: {
+      title: 'Alertas',
+      description: 'Aquí estarán las alertas verificadas cercanas.',
+    },
+    rights: {
+      title: 'Conoce tus derechos',
+      description: 'Aquí estarán los guiones y la tarjeta para mostrar.',
+    },
+    settings: {
+      title: 'Ajustes y privacidad',
+      description: 'Aquí estarán el PIN, el borrado y la privacidad.',
+    },
+    verifier: {
+      title: 'Cola de verificación',
+      description:
+        'Revisión solo por invitación. Esta ruta no está en la barra.',
+    },
+  },
+  gallery: {
+    open: 'Abrir la galería de componentes',
+    title: 'Galería de componentes',
+    intro:
+      'Tokens de diseño y piezas de interfaz de las maquetas. Todos los recursos se cargan desde esta aplicación.',
+    tokens: 'Tokens de color',
+    buttons: 'Botones',
+    badges: 'Insignias',
+    chips: 'Chips',
+    listRows: 'Filas de lista',
+    progress: 'Barra de progreso',
+    keypad: 'Teclado',
+    icons: 'Iconos de línea',
+    primary: 'Acción principal',
+    ghost: 'Acción secundaria',
+    danger: 'Borrar todos los datos ahora',
+    linkStyled: 'Enlace con estilo de botón',
+    okBadge: 'Listo',
+    warnBadge: 'Pendiente',
+    chipLegal: 'Ayuda legal',
+    chipFood: 'Comida',
+    chipClinic: 'Clínica',
+    rowDone: 'Contactos de emergencia',
+    rowTodo: 'Medicamentos',
+    done: 'Listo',
+    todo: 'Pendiente',
+    progressLabel: 'Tu plan',
+    pinDotsLabel: 'Longitud del PIN hasta ahora',
+    deleteLabel: 'Borrar',
+    ink: 'Fondo tinta',
+    mint: 'Menta principal',
+    amber: 'Ámbar de aviso',
+    cardSampleTitle: 'Tarjeta',
+    cardSampleBody: 'Superficie elevada sobre tinta.',
+    back: 'Atrás',
+  },
 }
 
 export default es

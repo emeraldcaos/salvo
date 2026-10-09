@@ -47,4 +47,61 @@ export interface LocaleMessages {
     title: string
     description: string
   }
+  lock: {
+    prompt: string
+    forgotPin: string
+  }
+  nav: {
+    label: string
+    home: string
+    plan: string
+    help: string
+    alerts: string
+    rights: string
+    settings: string
+  }
+  screens: {
+    home: { title: string; description: string }
+    plan: { title: string; description: string }
+    help: { title: string; description: string }
+    alerts: { title: string; description: string }
+    rights: { title: string; description: string }
+    settings: { title: string; description: string }
+    verifier: { title: string; description: string }
+  }
+  gallery: {
+    open: string
+    title: string
+    intro: string
+    tokens: string
+    buttons: string
+    badges: string
+    chips: string
+    listRows: string
+    progress: string
+    keypad: string
+    icons: string
+    primary: string
+    ghost: string
+    danger: string
+    linkStyled: string
+    okBadge: string
+    warnBadge: string
+    chipLegal: string
+    chipFood: string
+    chipClinic: string
+    rowDone: string
+    rowTodo: string
+    done: string
+    todo: string
+    progressLabel: string
+    pinDotsLabel: string
+    deleteLabel: string
+    ink: string
+    mint: string
+    amber: string
+    cardSampleTitle: string
+    cardSampleBody: string
+    back: string
+  }
 }

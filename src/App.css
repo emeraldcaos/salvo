@@ -5,6 +5,33 @@
   min-height: 100svh;
 }
 
+.app-body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.screen-main {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+}
+
+.screen-lock__heading {
+  margin-top: 56px;
+  text-align: center;
+}
+
+.screen-lock__footer {
+  margin-top: auto;
+  text-align: center;
+}
+
+.welcome-language {
+  width: 100%;
+}
+
 .app-header {
   align-items: center;
   border-bottom: 1px solid var(--border);
@@ -35,14 +62,14 @@
 }
 
 .language-control label {
-  color: var(--text);
+  color: var(--text-muted);
   font-size: 14px;
 }
 
 .language-control select {
-  background: var(--bg);
-  border: 1px solid var(--border);
-  border-radius: 4px;
+  background: var(--ink-raised);
+  border: 1px solid var(--ink-line);
+  border-radius: var(--radius-control);
   color: var(--text-h);
   font: inherit;
   font-size: 14px;
@@ -57,9 +84,9 @@
 
 .quick-exit {
   align-items: center;
-  background: var(--bg);
+  background: transparent;
   border: 2px solid var(--text-h);
-  border-radius: 4px;
+  border-radius: var(--radius-control);
   color: var(--text-h);
   display: inline-flex;
   font-size: 14px;
@@ -71,7 +98,7 @@
 }
 
 .quick-exit:hover {
-  background: #eef2ed;
+  background: var(--ink-raised);
 }
 
 .quick-exit:focus-visible {
@@ -81,7 +108,7 @@
 
 .pwa-notice {
   align-items: center;
-  background: #eef2ed;
+  background: var(--ink-raised);
   border-bottom: 1px solid var(--border);
   display: flex;
   gap: 20px;
@@ -111,9 +138,10 @@
 }
 
 .update-button {
-  background: var(--text-h);
-  border-radius: 4px;
-  color: var(--bg);
+  background: var(--mint);
+  border-radius: var(--radius-control);
+  color: var(--mint-ink);
+  font-weight: 700;
 }
 
 .dismiss-button {
@@ -128,32 +156,11 @@
   outline-offset: 2px;
 }
 
-.welcome {
-  margin: auto;
-  max-width: 720px;
-  padding: 80px 28px 112px;
-  text-align: left;
-  width: 100%;
-}
-
 .eyebrow {
-  color: var(--accent);
+  color: var(--mint);
   font-size: 14px;
   font-weight: 700;
-  margin-bottom: 16px;
-}
-
-.welcome h1 {
-  font-size: 48px;
-  line-height: 1.12;
-  margin: 0 0 20px;
-  max-width: 620px;
-}
-
-.welcome-copy {
-  color: var(--text);
-  font-size: 19px;
-  max-width: 560px;
+  margin: 0 0 8px;
 }
 
 .pin-access {
@@ -195,9 +202,9 @@
 }
 
 .pin-field input {
-  background: var(--bg);
-  border: 2px solid var(--text-h);
-  border-radius: 4px;
+  background: var(--ink-raised);
+  border: 2px solid var(--ink-line);
+  border-radius: var(--radius-control);
   color: var(--text-h);
   font: inherit;
   font-size: 18px;
@@ -214,10 +221,10 @@
 }
 
 .pin-action {
-  background: var(--text-h);
-  border: 2px solid var(--text-h);
-  border-radius: 4px;
-  color: var(--bg);
+  background: var(--mint);
+  border: 2px solid var(--mint);
+  border-radius: var(--radius-control);
+  color: var(--mint-ink);
   cursor: pointer;
   font: inherit;
   font-size: 15px;
@@ -245,7 +252,7 @@
 }
 
 .pin-feedback[role='alert'] {
-  color: var(--accent);
+  color: var(--danger-text);
   font-weight: 700;
 }
 
@@ -287,26 +294,15 @@
   .pwa-actions {
     align-self: flex-end;
   }
-
-  .welcome {
-    padding: 64px 24px 88px;
-  }
-
-  .welcome h1 {
-    font-size: 38px;
-  }
-
-  .welcome-copy {
-    font-size: 17px;
-  }
 }
 
 @media (prefers-contrast: more) {
   :root {
-    --text: #1d2922;
-    --text-h: #101a14;
-    --border: #68736c;
-    --accent: #742717;
+    --text: #ffffff;
+    --text-h: #ffffff;
+    --text-muted: #d5e2eb;
+    --ink-border: #9fb3c2;
+    --ink-line: #c5d4df;
   }
 
   .app-header,
@@ -321,7 +317,10 @@
   .language-control select,
   .pin-field input,
   .pin-action,
-  .pwa-actions button {
+  .pwa-actions button,
+  .ui-button,
+  .ui-chip,
+  .ui-list-row {
     border: 1px solid ButtonText;
   }
 }
