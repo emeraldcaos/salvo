@@ -5,6 +5,14 @@ export interface LocaleMessages {
     setupTitle: string
     unlockTitle: string
     activeTitle: string
+    setupDecoyAction: string
+    decoyPinTitle: string
+    decoyPinLabel: string
+    confirmDecoyPinLabel: string
+    decoyPinHint: string
+    decoyPinConfigured: string
+    pinMismatch: string
+    pinAlreadyUsed: string
     inputLabel: string
     inputHint: string
     recoveryWarning: string

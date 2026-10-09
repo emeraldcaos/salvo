@@ -2,20 +2,22 @@ import { useEffect, useState } from 'react'
 import type { FormEvent } from 'react'
 import type { LocaleMessages } from '../i18n/types'
 import {
+  configureDecoyPin,
   createPinKey,
   getPinLockoutRemainingMs,
   hasPinConfiguration,
   unlockPinKey,
 } from './pinKey'
 import { EncryptedToolkitStore } from './encryptedToolkitStore'
+import type { PinIdentity } from './pinKey'
 
 interface PinAccessProps {
   messages: LocaleMessages['pin']
-  encryptionKey: CryptoKey | null
-  onKeyChange: (key: CryptoKey | null) => void
+  identity: PinIdentity | null
+  onIdentityChange: (identity: PinIdentity | null) => void
 }
 
-function PinAccess({ messages, encryptionKey, onKeyChange }: PinAccessProps) {
+function PinAccess({ messages, identity, onIdentityChange }: PinAccessProps) {
   const [configured, setConfigured] = useState(hasPinConfiguration)
   const [pin, setPin] = useState('')
   const [feedback, setFeedback] = useState('')
@@ -24,6 +26,12 @@ function PinAccess({ messages, encryptionKey, onKeyChange }: PinAccessProps) {
     () => Date.now() + getPinLockoutRemainingMs(),
   )
   const [clockNow, setClockNow] = useState(Date.now)
+  const [showDecoyForm, setShowDecoyForm] = useState(false)
+  const [decoyPin, setDecoyPin] = useState('')
+  const [confirmDecoyPin, setConfirmDecoyPin] = useState('')
+  const [decoyFeedback, setDecoyFeedback] = useState('')
+  const [decoySucceeded, setDecoySucceeded] = useState(false)
+  const [isConfiguringDecoy, setIsConfiguringDecoy] = useState(false)
   const remainingSeconds = Math.ceil(Math.max(0, lockedUntil - clockNow) / 1000)
 
   useEffect(() => {
@@ -50,9 +58,12 @@ function PinAccess({ messages, encryptionKey, onKeyChange }: PinAccessProps) {
       if (result.ok) {
         setConfigured(true)
         setPin('')
-        const store = await EncryptedToolkitStore.open(result.key)
+        const store = await EncryptedToolkitStore.open(result.key, {
+          profileId: result.profileId,
+          role: result.role,
+        })
         store.close()
-        onKeyChange(result.key)
+        onIdentityChange(result)
         setFeedback('')
         return
       }
@@ -86,32 +97,138 @@ function PinAccess({ messages, encryptionKey, onKeyChange }: PinAccessProps) {
     }
   }
 
+  async function handleDecoySubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault()
+    if (!identity || isConfiguringDecoy) return
+    if (decoyPin !== confirmDecoyPin) {
+      setDecoySucceeded(false)
+      setDecoyFeedback(messages.pinMismatch)
+      return
+    }
+
+    setIsConfiguringDecoy(true)
+    setDecoyFeedback('')
+    try {
+      const result = await configureDecoyPin(decoyPin, identity)
+      if (result.ok) {
+        setDecoySucceeded(true)
+        setDecoyFeedback(messages.decoyPinConfigured)
+        setDecoyPin('')
+        setConfirmDecoyPin('')
+        setShowDecoyForm(false)
+      } else {
+        const errorCopy: Record<string, string> = {
+          'pin-already-used': messages.pinAlreadyUsed,
+          'not-active-profile': messages.unavailable,
+          'not-configured': messages.notConfigured,
+          'invalid-pin': messages.invalidPin,
+          unavailable: messages.unavailable,
+        }
+        setDecoySucceeded(false)
+        setDecoyFeedback(errorCopy[result.reason])
+      }
+    } catch {
+      setDecoySucceeded(false)
+      setDecoyFeedback(messages.unavailable)
+    } finally {
+      setIsConfiguringDecoy(false)
+    }
+  }
+
   return (
     <section className="pin-access" aria-labelledby="pin-access-title">
       <h2 id="pin-access-title">
-        {encryptionKey
+        {identity
           ? messages.activeTitle
           : configured
             ? messages.unlockTitle
             : messages.setupTitle}
       </h2>
-      {encryptionKey ? (
-        <div className="pin-status">
-          <p role="status">{messages.unlocked}</p>
-          <button
-            className="pin-action"
-            type="button"
-            onClick={() => onKeyChange(null)}
-          >
-            {messages.lockAction}
-          </button>
-        </div>
+      {identity ? (
+        <>
+          <div className="pin-status">
+            <p role="status">{messages.unlocked}</p>
+            <button
+              className="pin-action"
+              type="button"
+              onClick={() => onIdentityChange(null)}
+            >
+              {messages.lockAction}
+            </button>
+          </div>
+          <div className="decoy-setup">
+            <button
+              className="pin-secondary-action"
+              type="button"
+              aria-expanded={showDecoyForm}
+              onClick={() => {
+                setShowDecoyForm((visible) => !visible)
+                setDecoyFeedback('')
+              }}
+            >
+              {messages.setupDecoyAction}
+            </button>
+            {showDecoyForm && (
+              <form className="decoy-form" onSubmit={handleDecoySubmit}>
+                <h3>{messages.decoyPinTitle}</h3>
+                <p>{messages.decoyPinHint}</p>
+                <label htmlFor="decoy-pin">{messages.decoyPinLabel}</label>
+                <input
+                  id="decoy-pin"
+                  type="password"
+                  inputMode="numeric"
+                  autoComplete="new-password"
+                  pattern="[0-9]{8,12}"
+                  minLength={8}
+                  maxLength={12}
+                  required
+                  value={decoyPin}
+                  onChange={(event) => setDecoyPin(event.target.value)}
+                />
+                <label htmlFor="confirm-decoy-pin">
+                  {messages.confirmDecoyPinLabel}
+                </label>
+                <input
+                  id="confirm-decoy-pin"
+                  type="password"
+                  inputMode="numeric"
+                  autoComplete="new-password"
+                  pattern="[0-9]{8,12}"
+                  minLength={8}
+                  maxLength={12}
+                  required
+                  value={confirmDecoyPin}
+                  onChange={(event) => setConfirmDecoyPin(event.target.value)}
+                />
+                <button
+                  className="pin-action"
+                  type="submit"
+                  disabled={isConfiguringDecoy}
+                >
+                  {messages.setupDecoyAction}
+                </button>
+              </form>
+            )}
+            {decoyFeedback && (
+              <p
+                className="pin-feedback"
+                role={decoySucceeded ? 'status' : 'alert'}
+              >
+                {decoyFeedback}
+              </p>
+            )}
+          </div>
+        </>
       ) : (
         <>
-          <p className="pin-notice">{messages.recoveryWarning}</p>
-          <p className="pin-notice">{messages.scopeNote}</p>
-          <p className="pin-notice">{messages.securityNote}</p>
-          <p className="pin-notice">{messages.retryPolicy}</p>
+          {!configured && (
+            <>
+              <p className="pin-notice">{messages.recoveryWarning}</p>
+              <p className="pin-notice">{messages.scopeNote}</p>
+              <p className="pin-notice">{messages.securityNote}</p>
+              <p className="pin-notice">{messages.retryPolicy}</p>
+            </>
+          )}
           <form
             className="pin-form"
             onSubmit={(event) => void handleSubmit(event)}

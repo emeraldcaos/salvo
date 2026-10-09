@@ -4,6 +4,7 @@ import { languages, resolveLanguage, translations } from './i18n'
 import type { Language } from './i18n'
 import PinAccess from './security/PinAccess'
 import PinKeyContext from './security/PinKeyContext'
+import type { PinIdentity } from './security/pinKey'
 import './App.css'
 
 function App() {
@@ -15,7 +16,7 @@ function App() {
   const [language, setLanguage] = useState<Language>(() =>
     resolveLanguage(navigator.language),
   )
-  const [pinKey, setPinKey] = useState<CryptoKey | null>(null)
+  const [pinIdentity, setPinIdentity] = useState<PinIdentity | null>(null)
   const messages = translations[language]
 
   useEffect(() => {
@@ -24,7 +25,13 @@ function App() {
   }, [language, messages.appName])
 
   return (
-    <PinKeyContext.Provider value={pinKey}>
+    <PinKeyContext.Provider
+      value={
+        pinIdentity
+          ? { key: pinIdentity.key, profileId: pinIdentity.profileId }
+          : null
+      }
+    >
       <div className="app-shell">
         <header className="app-header">
           <span className="brand">{messages.appName}</span>
@@ -98,8 +105,8 @@ function App() {
         <main className="welcome">
           <PinAccess
             messages={messages.pin}
-            encryptionKey={pinKey}
-            onKeyChange={setPinKey}
+            identity={pinIdentity}
+            onIdentityChange={setPinIdentity}
           />
           <p className="eyebrow">{messages.welcome.eyebrow}</p>
           <h1>{messages.welcome.title}</h1>
