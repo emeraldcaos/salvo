@@ -1,0 +1,28 @@
+.tab-bar {
+  background: var(--ink);
+  border-top: 1px solid var(--ink-border);
+  display: flex;
+  flex: 0 0 auto;
+  margin-top: auto;
+  padding: 6px 0 env(safe-area-inset-bottom, 0);
+}
+
+.tab-bar__item {
+  align-items: center;
+  color: var(--text-muted);
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  min-height: 48px;
+  text-decoration: none;
+}
+
+.tab-bar__item:focus-visible {
+  outline: 3px solid var(--mint);
+  outline-offset: -3px;
+}
+
+.tab-bar__item--active {
+  box-shadow: inset 0 2px 0 var(--mint);
+  color: var(--mint);
+}

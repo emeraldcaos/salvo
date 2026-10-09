@@ -41,8 +41,18 @@ export function CardTitle({ children }: { children: ReactNode }) {
   return <h2 className="ui-card__title">{children}</h2>
 }
 
-export function Muted({ children }: { children: ReactNode }) {
-  return <p className="ui-muted">{children}</p>
+export function Muted({
+  children,
+  className,
+}: {
+  children: ReactNode
+  className?: string
+}) {
+  return (
+    <p className={['ui-muted', className].filter(Boolean).join(' ')}>
+      {children}
+    </p>
+  )
 }
 
 export function Row({

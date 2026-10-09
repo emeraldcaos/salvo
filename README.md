@@ -29,7 +29,11 @@ Locale messages live in `src/i18n/locales/`. Each locale follows the shape in `s
 
 ## Design tokens and shared UI
 
-Shared tokens and components live in `src/ui/`. The app uses an ink ground, mint primary, and amber caution palette with self-hosted Atkinson Hyperlegible (`src/assets/fonts/`, SIL OFL). Open the component gallery from the welcome screen or `#gallery`. Line icons are also available as an SVG sprite in `public/icons/line-icons.svg`.
+Shared tokens and components live in `src/ui/`. The app uses an ink ground, mint primary, and amber caution palette with self-hosted Atkinson Hyperlegible (`src/assets/fonts/`, SIL OFL). Open the component gallery from Settings (`/gallery`) after unlock. Line icons are also available as an SVG sprite in `public/icons/line-icons.svg`.
+
+## Routing
+
+Client-side routes live under `src/routing/`. First run opens `/welcome`. A configured but locked session is forced to `/lock` from any path. After unlock, the six-tab bar navigates Home, Plan, Help, Alerts, Rights, and Settings. `/verifier` is a hidden route and is not in the tab bar. Offline navigations fall back to `index.html` through the service worker.
 
 ## Install and use offline
 

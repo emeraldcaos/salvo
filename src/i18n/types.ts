@@ -47,6 +47,28 @@ export interface LocaleMessages {
     title: string
     description: string
   }
+  lock: {
+    prompt: string
+    forgotPin: string
+  }
+  nav: {
+    label: string
+    home: string
+    plan: string
+    help: string
+    alerts: string
+    rights: string
+    settings: string
+  }
+  screens: {
+    home: { title: string; description: string }
+    plan: { title: string; description: string }
+    help: { title: string; description: string }
+    alerts: { title: string; description: string }
+    rights: { title: string; description: string }
+    settings: { title: string; description: string }
+    verifier: { title: string; description: string }
+  }
   gallery: {
     open: string
     title: string

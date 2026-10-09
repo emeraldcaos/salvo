@@ -5,6 +5,33 @@
   min-height: 100svh;
 }
 
+.app-body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.screen-main {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+}
+
+.screen-lock__heading {
+  margin-top: 56px;
+  text-align: center;
+}
+
+.screen-lock__footer {
+  margin-top: auto;
+  text-align: center;
+}
+
+.welcome-language {
+  width: 100%;
+}
+
 .app-header {
   align-items: center;
   border-bottom: 1px solid var(--border);
@@ -129,36 +156,11 @@
   outline-offset: 2px;
 }
 
-.welcome {
-  margin: auto;
-  max-width: 720px;
-  padding: 80px 28px 112px;
-  text-align: left;
-  width: 100%;
-}
-
 .eyebrow {
   color: var(--mint);
   font-size: 14px;
   font-weight: 700;
-  margin-bottom: 16px;
-}
-
-.welcome h1 {
-  font-size: 48px;
-  line-height: 1.12;
-  margin: 0 0 20px;
-  max-width: 620px;
-}
-
-.welcome-copy {
-  color: var(--text-muted);
-  font-size: 19px;
-  max-width: 560px;
-}
-
-.gallery-entry {
-  margin-top: 28px;
+  margin: 0 0 8px;
 }
 
 .pin-access {
@@ -291,18 +293,6 @@
 
   .pwa-actions {
     align-self: flex-end;
-  }
-
-  .welcome {
-    padding: 64px 24px 88px;
-  }
-
-  .welcome h1 {
-    font-size: 38px;
-  }
-
-  .welcome-copy {
-    font-size: 17px;
   }
 }
 
