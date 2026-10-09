@@ -1,0 +1,57 @@
+@font-face {
+  font-family: 'Atkinson Hyperlegible';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('../assets/fonts/AtkinsonHyperlegible-Regular.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Atkinson Hyperlegible';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('../assets/fonts/AtkinsonHyperlegible-Bold.woff2') format('woff2');
+}
+
+:root {
+  /* Ink ground + surfaces */
+  --ink: #0e1a24;
+  --ink-raised: #162634;
+  --ink-border: #243a4b;
+  --ink-line: #3a566b;
+
+  /* Text */
+  --text: #eaf1f5;
+  --text-muted: #9fb3c2;
+  --text-h: #eaf1f5;
+
+  /* Mint primary */
+  --mint: #5fd3b0;
+  --mint-ink: #06241c;
+  --mint-deep: #12382f;
+
+  /* Amber caution */
+  --amber: #f2b84b;
+  --amber-deep: #3a2e12;
+  --amber-muted: #e5d3a6;
+  --amber-border: #5a4719;
+
+  /* Danger */
+  --danger: #e5737a;
+  --danger-text: #f4a3a8;
+
+  /* Compat aliases used by existing screens */
+  --bg: var(--ink);
+  --border: var(--ink-border);
+  --accent: var(--mint);
+
+  /* Layout */
+  --font: 'Atkinson Hyperlegible', system-ui, sans-serif;
+  --radius-card: 14px;
+  --radius-control: 12px;
+  --radius-pill: 99px;
+  --touch-min: 44px;
+  --space-screen: 20px;
+  --gap: 12px;
+}

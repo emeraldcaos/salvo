@@ -5,7 +5,12 @@ import type { Language } from './i18n'
 import PinAccess from './security/PinAccess'
 import PinKeyContext from './security/PinKeyContext'
 import type { PinIdentity } from './security/pinKey'
+import { Button, ComponentGallery } from './ui'
 import './App.css'
+
+function readGalleryHash(): boolean {
+  return window.location.hash === '#gallery'
+}
 
 function App() {
   const {
@@ -17,12 +22,35 @@ function App() {
     resolveLanguage(navigator.language),
   )
   const [pinIdentity, setPinIdentity] = useState<PinIdentity | null>(null)
+  const [showGallery, setShowGallery] = useState(readGalleryHash)
   const messages = translations[language]
 
   useEffect(() => {
     document.documentElement.lang = language
     document.title = messages.appName
   }, [language, messages.appName])
+
+  useEffect(() => {
+    const onHashChange = () => setShowGallery(readGalleryHash())
+    window.addEventListener('hashchange', onHashChange)
+    return () => window.removeEventListener('hashchange', onHashChange)
+  }, [])
+
+  const openGallery = () => {
+    window.location.hash = 'gallery'
+    setShowGallery(true)
+  }
+
+  const closeGallery = () => {
+    if (window.location.hash === '#gallery') {
+      history.replaceState(
+        null,
+        '',
+        `${window.location.pathname}${window.location.search}`,
+      )
+    }
+    setShowGallery(false)
+  }
 
   return (
     <PinKeyContext.Provider
@@ -102,16 +130,25 @@ function App() {
           </aside>
         )}
 
-        <main className="welcome">
-          <PinAccess
-            messages={messages.pin}
-            identity={pinIdentity}
-            onIdentityChange={setPinIdentity}
-          />
-          <p className="eyebrow">{messages.welcome.eyebrow}</p>
-          <h1>{messages.welcome.title}</h1>
-          <p className="welcome-copy">{messages.welcome.description}</p>
-        </main>
+        {showGallery ? (
+          <ComponentGallery messages={messages.gallery} onBack={closeGallery} />
+        ) : (
+          <main className="welcome">
+            <PinAccess
+              messages={messages.pin}
+              identity={pinIdentity}
+              onIdentityChange={setPinIdentity}
+            />
+            <p className="eyebrow">{messages.welcome.eyebrow}</p>
+            <h1>{messages.welcome.title}</h1>
+            <p className="welcome-copy">{messages.welcome.description}</p>
+            <div className="gallery-entry">
+              <Button variant="ghost" onClick={openGallery}>
+                {messages.gallery.open}
+              </Button>
+            </div>
+          </main>
+        )}
       </div>
     </PinKeyContext.Provider>
   )

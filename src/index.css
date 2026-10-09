@@ -1,13 +1,9 @@
-:root {
-  --text: #42544b;
-  --text-h: #172b22;
-  --bg: #fbfcf8;
-  --border: #d9e1d9;
-  --accent: #a4432f;
+@import './ui/tokens.css';
 
+:root {
   background: var(--bg);
   color: var(--text);
-  font-family: system-ui, 'Segoe UI', sans-serif;
+  font-family: var(--font);
   font-synthesis: none;
   font-weight: 400;
   text-rendering: optimizeLegibility;
@@ -23,10 +19,10 @@ body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
+  background: var(--bg);
 }
 
 #root {
-  border-inline: 1px solid var(--border);
   margin: 0 auto;
   max-width: 1126px;
   min-height: 100vh;
@@ -40,5 +36,5 @@ p {
 h1 {
   color: var(--text-h);
   font-size: 48px;
-  font-weight: 600;
+  font-weight: 700;
 }

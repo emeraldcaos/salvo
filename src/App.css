@@ -35,14 +35,14 @@
 }
 
 .language-control label {
-  color: var(--text);
+  color: var(--text-muted);
   font-size: 14px;
 }
 
 .language-control select {
-  background: var(--bg);
-  border: 1px solid var(--border);
-  border-radius: 4px;
+  background: var(--ink-raised);
+  border: 1px solid var(--ink-line);
+  border-radius: var(--radius-control);
   color: var(--text-h);
   font: inherit;
   font-size: 14px;
@@ -57,9 +57,9 @@
 
 .quick-exit {
   align-items: center;
-  background: var(--bg);
+  background: transparent;
   border: 2px solid var(--text-h);
-  border-radius: 4px;
+  border-radius: var(--radius-control);
   color: var(--text-h);
   display: inline-flex;
   font-size: 14px;
@@ -71,7 +71,7 @@
 }
 
 .quick-exit:hover {
-  background: #eef2ed;
+  background: var(--ink-raised);
 }
 
 .quick-exit:focus-visible {
@@ -81,7 +81,7 @@
 
 .pwa-notice {
   align-items: center;
-  background: #eef2ed;
+  background: var(--ink-raised);
   border-bottom: 1px solid var(--border);
   display: flex;
   gap: 20px;
@@ -111,9 +111,10 @@
 }
 
 .update-button {
-  background: var(--text-h);
-  border-radius: 4px;
-  color: var(--bg);
+  background: var(--mint);
+  border-radius: var(--radius-control);
+  color: var(--mint-ink);
+  font-weight: 700;
 }
 
 .dismiss-button {
@@ -137,7 +138,7 @@
 }
 
 .eyebrow {
-  color: var(--accent);
+  color: var(--mint);
   font-size: 14px;
   font-weight: 700;
   margin-bottom: 16px;
@@ -151,9 +152,13 @@
 }
 
 .welcome-copy {
-  color: var(--text);
+  color: var(--text-muted);
   font-size: 19px;
   max-width: 560px;
+}
+
+.gallery-entry {
+  margin-top: 28px;
 }
 
 .pin-access {
@@ -195,9 +200,9 @@
 }
 
 .pin-field input {
-  background: var(--bg);
-  border: 2px solid var(--text-h);
-  border-radius: 4px;
+  background: var(--ink-raised);
+  border: 2px solid var(--ink-line);
+  border-radius: var(--radius-control);
   color: var(--text-h);
   font: inherit;
   font-size: 18px;
@@ -214,10 +219,10 @@
 }
 
 .pin-action {
-  background: var(--text-h);
-  border: 2px solid var(--text-h);
-  border-radius: 4px;
-  color: var(--bg);
+  background: var(--mint);
+  border: 2px solid var(--mint);
+  border-radius: var(--radius-control);
+  color: var(--mint-ink);
   cursor: pointer;
   font: inherit;
   font-size: 15px;
@@ -245,7 +250,7 @@
 }
 
 .pin-feedback[role='alert'] {
-  color: var(--accent);
+  color: var(--danger-text);
   font-weight: 700;
 }
 
@@ -303,10 +308,11 @@
 
 @media (prefers-contrast: more) {
   :root {
-    --text: #1d2922;
-    --text-h: #101a14;
-    --border: #68736c;
-    --accent: #742717;
+    --text: #ffffff;
+    --text-h: #ffffff;
+    --text-muted: #d5e2eb;
+    --ink-border: #9fb3c2;
+    --ink-line: #c5d4df;
   }
 
   .app-header,
@@ -321,7 +327,10 @@
   .language-control select,
   .pin-field input,
   .pin-action,
-  .pwa-actions button {
+  .pwa-actions button,
+  .ui-button,
+  .ui-chip,
+  .ui-list-row {
     border: 1px solid ButtonText;
   }
 }

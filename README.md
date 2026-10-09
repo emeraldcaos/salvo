@@ -27,6 +27,10 @@ npm run build
 
 Locale messages live in `src/i18n/locales/`. Each locale follows the shape in `src/i18n/types.ts`; add the same keys to a new locale file and register its language code in `src/i18n/index.ts`. Regional locale tags use their primary language, and unsupported languages fall back to English. See [`docs/i18n-style-guide.md`](docs/i18n-style-guide.md) before adding or changing UI copy.
 
+## Design tokens and shared UI
+
+Shared tokens and components live in `src/ui/`. The app uses an ink ground, mint primary, and amber caution palette with self-hosted Atkinson Hyperlegible (`src/assets/fonts/`, SIL OFL). Open the component gallery from the welcome screen or `#gallery`. Line icons are also available as an SVG sprite in `public/icons/line-icons.svg`.
+
 ## Install and use offline
 
 The app uses the neutral **Notes** placeholder name and icon. On Android, open the site in a supported browser and choose **Install app** or **Add to Home screen**. On iOS, open it in Safari, tap **Share**, then **Add to Home Screen**. The first visit and installation require a connection; after the app shell has cached successfully, the current screen and its bundled assets work offline.

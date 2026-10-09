@@ -110,4 +110,22 @@ describe('App', () => {
 
     expect(pwaState.updateServiceWorker).toHaveBeenCalledWith(true)
   })
+
+  it('opens the component gallery without leaving the app shell', () => {
+    render(<App />)
+
+    fireEvent.click(
+      screen.getByRole('button', { name: 'Open component gallery' }),
+    )
+
+    expect(
+      screen.getByRole('heading', { name: 'Component gallery' }),
+    ).toBeInTheDocument()
+    expect(window.location.hash).toBe('#gallery')
+
+    fireEvent.click(screen.getByRole('button', { name: 'Back' }))
+    expect(
+      screen.getByRole('heading', { name: 'Clear support starts here.' }),
+    ).toBeInTheDocument()
+  })
 })
