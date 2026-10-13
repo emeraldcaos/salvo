@@ -6,6 +6,7 @@ import {
   createPinKey,
   getPinLockoutRemainingMs,
   hasPinConfiguration,
+  PIN_LENGTH,
   unlockPinKey,
 } from './pinKey'
 import { EncryptedToolkitStore } from './encryptedToolkitStore'
@@ -178,9 +179,9 @@ function PinAccess({ messages, identity, onIdentityChange }: PinAccessProps) {
                   type="password"
                   inputMode="numeric"
                   autoComplete="new-password"
-                  pattern="[0-9]{8,12}"
-                  minLength={8}
-                  maxLength={12}
+                  pattern={`[0-9]{${PIN_LENGTH}}`}
+                  minLength={PIN_LENGTH}
+                  maxLength={PIN_LENGTH}
                   required
                   value={decoyPin}
                   onChange={(event) => setDecoyPin(event.target.value)}
@@ -193,9 +194,9 @@ function PinAccess({ messages, identity, onIdentityChange }: PinAccessProps) {
                   type="password"
                   inputMode="numeric"
                   autoComplete="new-password"
-                  pattern="[0-9]{8,12}"
-                  minLength={8}
-                  maxLength={12}
+                  pattern={`[0-9]{${PIN_LENGTH}}`}
+                  minLength={PIN_LENGTH}
+                  maxLength={PIN_LENGTH}
                   required
                   value={confirmDecoyPin}
                   onChange={(event) => setConfirmDecoyPin(event.target.value)}
@@ -241,9 +242,9 @@ function PinAccess({ messages, identity, onIdentityChange }: PinAccessProps) {
                   type="password"
                   inputMode="numeric"
                   autoComplete="off"
-                  pattern="[0-9]{8,12}"
-                  minLength={8}
-                  maxLength={12}
+                  pattern={`[0-9]{${PIN_LENGTH}}`}
+                  minLength={PIN_LENGTH}
+                  maxLength={PIN_LENGTH}
                   required
                   value={pin}
                   aria-describedby="pin-guidance"

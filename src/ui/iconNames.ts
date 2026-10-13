@@ -6,6 +6,7 @@ export const iconNames = [
   'rights',
   'settings',
   'backspace',
+  'check',
 ] as const
 
 export type IconName = (typeof iconNames)[number]

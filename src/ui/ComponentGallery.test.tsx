@@ -27,8 +27,10 @@ describe('ComponentGallery', () => {
       screen.getByRole('button', { name: 'Wipe all data now' }),
     ).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Delete' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Unlock' })).toBeDisabled()
     expect(screen.getByText('home')).toBeInTheDocument()
     expect(screen.getByText('backspace')).toBeInTheDocument()
+    expect(screen.getByText('check')).toBeInTheDocument()
     expect(screen.getByRole('progressbar')).toHaveAttribute(
       'aria-valuenow',
       '4',

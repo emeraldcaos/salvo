@@ -5,11 +5,23 @@ type KeypadProps = {
   onDigit: (digit: string) => void
   onDelete: () => void
   deleteLabel: string
+  disabled?: boolean
+  onSubmit?: () => void
+  submitLabel?: string
+  canSubmit?: boolean
 }
 
 const digits = ['1', '2', '3', '4', '5', '6', '7', '8', '9'] as const
 
-export function Keypad({ onDigit, onDelete, deleteLabel }: KeypadProps) {
+export function Keypad({
+  onDigit,
+  onDelete,
+  deleteLabel,
+  disabled = false,
+  onSubmit,
+  submitLabel = 'Unlock',
+  canSubmit = false,
+}: KeypadProps) {
   return (
     <div className="ui-keypad">
       {digits.map((digit) => (
@@ -17,15 +29,34 @@ export function Keypad({ onDigit, onDelete, deleteLabel }: KeypadProps) {
           key={digit}
           variant="ghost"
           className="ui-keypad__key"
+          disabled={disabled}
           onClick={() => onDigit(digit)}
         >
           {digit}
         </Button>
       ))}
-      <span className="ui-keypad__spacer" aria-hidden="true" />
+      <Button
+        variant={canSubmit ? 'primary' : 'ghost'}
+        className={[
+          'ui-keypad__key',
+          'ui-keypad__submit',
+          canSubmit ? 'ui-keypad__submit--ready' : 'ui-keypad__submit--idle',
+        ].join(' ')}
+        disabled={disabled || !canSubmit}
+        aria-label={submitLabel}
+        onClick={onSubmit}
+      >
+        <Icon
+          name="check"
+          className={
+            canSubmit ? 'ui-icon--check-solid' : 'ui-icon--check-outline'
+          }
+        />
+      </Button>
       <Button
         variant="ghost"
         className="ui-keypad__key"
+        disabled={disabled}
         onClick={() => onDigit('0')}
       >
         0
@@ -34,6 +65,7 @@ export function Keypad({ onDigit, onDelete, deleteLabel }: KeypadProps) {
         variant="ghost"
         className="ui-keypad__key"
         aria-label={deleteLabel}
+        disabled={disabled}
         onClick={onDelete}
       >
         <Icon name="backspace" />

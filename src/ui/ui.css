@@ -213,8 +213,39 @@
   min-height: 64px;
 }
 
-.ui-keypad__spacer {
-  visibility: hidden;
+.ui-keypad__submit {
+  padding: 0;
+}
+
+.ui-keypad__submit:disabled {
+  cursor: default;
+  opacity: 1;
+}
+
+.ui-keypad__submit--idle {
+  color: var(--ink-line);
+}
+
+.ui-keypad__submit--ready {
+  color: var(--mint-ink);
+}
+
+.ui-icon--check-outline {
+  color: var(--ink-line);
+  fill: none;
+  stroke: currentColor;
+}
+
+.ui-icon--check-solid {
+  color: var(--mint-ink);
+  fill: none;
+  stroke: currentColor;
+}
+
+.ui-keypad__submit--ready .ui-icon--check-solid {
+  /* Ready state uses the mint primary button + solid mint-ink check,
+     not a faded/opacity change of the idle outline. */
+  color: var(--mint-ink);
 }
 
 .ui-pin-dots {
