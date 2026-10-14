@@ -50,6 +50,8 @@ export interface LocaleMessages {
   lock: {
     prompt: string
     forgotPin: string
+    deleteLabel: string
+    pinDotsLabel: string
   }
   nav: {
     label: string
@@ -97,6 +99,7 @@ export interface LocaleMessages {
     progressLabel: string
     pinDotsLabel: string
     deleteLabel: string
+    unlockLabel: string
     ink: string
     mint: string
     amber: string

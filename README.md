@@ -35,6 +35,10 @@ Shared tokens and components live in `src/ui/`. The app uses an ink ground, mint
 
 Client-side routes live under `src/routing/`. First run opens `/welcome`. A configured but locked session is forced to `/lock` from any path. After unlock, the six-tab bar navigates Home, Plan, Help, Alerts, Rights, and Settings. `/verifier` is a hidden route and is not in the tab bar. Offline navigations fall back to `index.html` through the service worker.
 
+## Lock screen
+
+`/lock` uses the shared keypad and six PIN dots. The unlock control is a check icon: outline on the ghost key while typing, then a solid mint primary key when all six digits are entered. The heading follows the install name (`Notes` by default; other variants come from T49). Wrong PINs use the existing backoff rules. The session locks after two minutes of idle input or when the tab is backgrounded, and a blank overlay covers the UI while hidden so app-switcher thumbnails do not show toolkit content. Primary and decoy PINs share the same unlock path.
+
 ## Install and use offline
 
 The app uses the neutral **Notes** placeholder name and icon. On Android, open the site in a supported browser and choose **Install app** or **Add to Home screen**. On iOS, open it in Safari, tap **Share**, then **Add to Home Screen**. The first visit and installation require a connection; after the app shell has cached successfully, the current screen and its bundled assets work offline.
@@ -51,7 +55,7 @@ The second PIN opens a separate empty profile. Manage the second PIN from either
 
 Database version 3 migrates legacy `salvo-toolkit` version 1 plaintext `items` rows (`{ id, value }`) and version 2 encrypted `encrypted-items` rows into the primary profile. Migration runs only after a primary PIN unlock; a decoy profile starts empty. Encrypted writes and clearing legacy stores happen in one IndexedDB transaction, so a failed migration preserves the originals. A decoy PIN is not forensic deniability: profile counts, storage sizes, browser state, or device examination may reveal another profile. Browser storage deletion is logical, not a guaranteed physical wipe of device storage.
 
-PINs must be 8 to 12 digits. After five incorrect attempts, the next attempt is delayed for 30 seconds; each further incorrect attempt doubles the delay, up to 15 minutes. A successful unlock clears the delay. The delay is stored in this browser and can be reset by clearing its site data, so it is not a strong defense against someone with access to browser storage. A numeric PIN can also be guessed offline if the stored key-check data is copied.
+PINs must be 6 digits. After five incorrect attempts, the next attempt is delayed for 30 seconds; each further incorrect attempt doubles the delay, up to 15 minutes. A successful unlock clears the delay. The delay is stored in this browser and can be reset by clearing its site data, so it is not a strong defense against someone with access to browser storage. A numeric PIN can also be guessed offline if the stored key-check data is copied.
 
 ## Script policy
 

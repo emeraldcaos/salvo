@@ -29,14 +29,21 @@ vi.mock('virtual:pwa-register/react', () => ({
   }),
 }))
 
-async function unlockWithPin(pin = '12345678') {
-  const submit = screen.getByRole('button', {
-    name: /^(Create key|Unlock)$/,
-  })
+async function createPinFromWelcome(pin = '123456') {
   fireEvent.change(screen.getByLabelText('PIN'), {
     target: { value: pin },
   })
-  fireEvent.click(submit)
+  fireEvent.click(screen.getByRole('button', { name: 'Create key' }))
+  await waitFor(() => {
+    expect(screen.getByRole('heading', { name: 'Home' })).toBeInTheDocument()
+  })
+}
+
+async function unlockWithKeypad(pin = '123456') {
+  for (const digit of pin) {
+    fireEvent.click(screen.getByRole('button', { name: digit }))
+  }
+  fireEvent.click(screen.getByRole('button', { name: 'Unlock' }))
   await waitFor(() => {
     expect(screen.getByRole('heading', { name: 'Home' })).toBeInTheDocument()
   })
@@ -49,6 +56,10 @@ describe('App', () => {
     localStorage.clear()
     window.history.replaceState(null, '', '/')
     vi.clearAllMocks()
+    Object.defineProperty(document, 'visibilityState', {
+      configurable: true,
+      get: () => 'visible',
+    })
   })
 
   afterEach(() => {
@@ -58,6 +69,10 @@ describe('App', () => {
     window.history.replaceState(null, '', '/')
     document.documentElement.lang = ''
     document.title = ''
+    Object.defineProperty(document, 'visibilityState', {
+      configurable: true,
+      get: () => 'visible',
+    })
   })
 
   it('sends first run to Welcome', () => {
@@ -77,7 +92,7 @@ describe('App', () => {
     expect(
       view.getByRole('heading', { name: 'Create your PIN key' }),
     ).toBeInTheDocument()
-    expect(view.getByLabelText('PIN')).toHaveAttribute('pattern', '[0-9]{8,12}')
+    expect(view.getByLabelText('PIN')).toHaveAttribute('pattern', '[0-9]{6}')
     expect(
       view.getByText(/does not encrypt app content yet/),
     ).toBeInTheDocument()
@@ -141,7 +156,7 @@ describe('App', () => {
 
   it('shows the six-tab bar with accessible names after unlock', async () => {
     render(<App />)
-    await unlockWithPin()
+    await createPinFromWelcome()
 
     const nav = screen.getByRole('navigation', { name: 'Main' })
     for (const name of [
@@ -163,8 +178,8 @@ describe('App', () => {
     )
   })
 
-  it('blocks every route while locked', async () => {
-    const created = await createPinKey('12345678')
+  it('blocks every route while locked and unlocks with the keypad', async () => {
+    const created = await createPinKey('123456')
     expect(created.ok).toBe(true)
 
     window.history.replaceState(null, '', '/plan')
@@ -173,18 +188,16 @@ describe('App', () => {
     await waitFor(() => {
       expect(screen.getByText('Enter your PIN')).toBeInTheDocument()
     })
+    expect(screen.getByRole('button', { name: 'Delete' })).toBeInTheDocument()
     expect(screen.queryByRole('navigation', { name: 'Main' })).toBeNull()
 
-    navigate(routes.verifier)
-    await waitFor(() => {
-      expect(screen.getByText('Enter your PIN')).toBeInTheDocument()
-    })
-    expect(screen.queryByRole('heading', { name: 'Verifier queue' })).toBeNull()
+    await unlockWithKeypad('123456')
+    expect(screen.getByRole('heading', { name: 'Home' })).toBeInTheDocument()
   })
 
   it('keeps the verifier route out of the tab bar', async () => {
     render(<App />)
-    await unlockWithPin()
+    await createPinFromWelcome()
 
     const nav = screen.getByRole('navigation', { name: 'Main' })
     expect(
@@ -198,5 +211,19 @@ describe('App', () => {
       ).toBeInTheDocument()
     })
     expect(screen.queryByRole('navigation', { name: 'Main' })).toBeNull()
+  })
+
+  it('locks and blanks the UI when the app is backgrounded', async () => {
+    render(<App />)
+    await createPinFromWelcome()
+
+    vi.spyOn(document, 'visibilityState', 'get').mockReturnValue('hidden')
+    vi.spyOn(document, 'hidden', 'get').mockReturnValue(true)
+    document.dispatchEvent(new Event('visibilitychange'))
+
+    await waitFor(() => {
+      expect(screen.getByText('Enter your PIN')).toBeInTheDocument()
+    })
+    expect(document.querySelector('.switcher-blank')).toBeTruthy()
   })
 })

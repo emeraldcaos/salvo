@@ -85,16 +85,16 @@ describe('PIN key derivation', () => {
     }
     const fetchSpy = vi.spyOn(globalThis, 'fetch')
 
-    const created = await createPinKey('58301942', dependencies)
+    const created = await createPinKey('583019', dependencies)
     expect(created.ok).toBe(true)
     if (!created.ok) return
     expect(created.key.extractable).toBe(false)
 
     const stored = dependencies.storage.getItem('salvo.pin-key.v1')
-    expect(stored).not.toContain('58301942')
+    expect(stored).not.toContain('583019')
     expect(hasPinConfiguration(dependencies)).toBe(true)
 
-    const unlocked = await unlockPinKey('58301942', dependencies)
+    const unlocked = await unlockPinKey('583019', dependencies)
     expect(unlocked.ok).toBe(true)
     if (unlocked.ok) expect(unlocked.key.extractable).toBe(false)
     expect(fetchSpy).not.toHaveBeenCalled()
@@ -107,11 +107,11 @@ describe('PIN key derivation', () => {
       storage: new MemoryStorage(),
       now: () => now,
     }
-    await createPinKey('58301942', dependencies)
+    await createPinKey('583019', dependencies)
 
     let result
     for (let attempt = 0; attempt < 5; attempt += 1) {
-      result = await unlockPinKey('58301943', dependencies)
+      result = await unlockPinKey('583018', dependencies)
     }
 
     expect(result).toEqual({
@@ -120,14 +120,14 @@ describe('PIN key derivation', () => {
       retryAfterMs: 30_000,
     })
     expect(getPinLockoutRemainingMs(dependencies, now)).toBe(30_000)
-    expect(await unlockPinKey('58301942', dependencies)).toEqual({
+    expect(await unlockPinKey('583019', dependencies)).toEqual({
       ok: false,
       reason: 'locked',
       retryAfterMs: 30_000,
     })
 
     now += 30_000
-    expect(await unlockPinKey('58301943', dependencies)).toEqual({
+    expect(await unlockPinKey('583018', dependencies)).toEqual({
       ok: false,
       reason: 'incorrect-pin',
       retryAfterMs: 60_000,
@@ -147,15 +147,15 @@ describe('PIN key derivation', () => {
       crypto: globalThis.crypto,
       storage,
     }
-    await writeLegacyPinConfig('58301942', storage)
+    await writeLegacyPinConfig('583019', storage)
 
-    const wrongPin = await unlockPinKey('58301943', dependencies)
+    const wrongPin = await unlockPinKey('583018', dependencies)
     expect(wrongPin).toMatchObject({ ok: false, reason: 'incorrect-pin' })
     expect(
       JSON.parse(storage.getItem('salvo.pin-key.v1') ?? '{}'),
     ).toMatchObject({ version: 1 })
 
-    const unlocked = await unlockPinKey('58301942', dependencies)
+    const unlocked = await unlockPinKey('583019', dependencies)
 
     expect(unlocked).toMatchObject({ ok: true, role: 'primary' })
     expect(
@@ -168,40 +168,40 @@ describe('PIN key derivation', () => {
       crypto: globalThis.crypto,
       storage: new MemoryStorage(),
     }
-    const primary = await createPinKey('58301942', dependencies)
+    const primary = await createPinKey('583019', dependencies)
     expect(primary.ok).toBe(true)
     if (!primary.ok) return
 
     await expect(
-      configureDecoyPin('58301942', primary, dependencies),
+      configureDecoyPin('583019', primary, dependencies),
     ).resolves.toEqual({ ok: false, reason: 'pin-already-used' })
     await expect(
-      configureDecoyPin('24681357', primary, dependencies),
+      configureDecoyPin('246813', primary, dependencies),
     ).resolves.toEqual({ ok: true })
     const storedConfig = dependencies.storage.getItem('salvo.pin-key.v1') ?? ''
     expect(storedConfig).not.toContain('primary')
     expect(storedConfig).not.toContain('decoy')
 
-    const primaryUnlock = await unlockPinKey('58301942', dependencies)
-    const decoyUnlock = await unlockPinKey('24681357', dependencies)
+    const primaryUnlock = await unlockPinKey('583019', dependencies)
+    const decoyUnlock = await unlockPinKey('246813', dependencies)
     expect(primaryUnlock).toMatchObject({ ok: true, role: 'primary' })
     expect(decoyUnlock).toMatchObject({ ok: true, role: 'decoy' })
     if (primaryUnlock.ok && decoyUnlock.ok) {
       expect(primaryUnlock.profileId).not.toBe(decoyUnlock.profileId)
       await expect(
-        configureDecoyPin('13572468', decoyUnlock, dependencies),
+        configureDecoyPin('135724', decoyUnlock, dependencies),
       ).resolves.toEqual({ ok: true })
     }
 
-    expect(await unlockPinKey('58301942', dependencies)).toMatchObject({
+    expect(await unlockPinKey('583019', dependencies)).toMatchObject({
       ok: true,
       role: 'primary',
     })
-    expect(await unlockPinKey('24681357', dependencies)).toMatchObject({
+    expect(await unlockPinKey('246813', dependencies)).toMatchObject({
       ok: false,
       reason: 'incorrect-pin',
     })
-    const rotatedDecoy = await unlockPinKey('13572468', dependencies)
+    const rotatedDecoy = await unlockPinKey('135724', dependencies)
     expect(rotatedDecoy).toMatchObject({
       ok: true,
       role: 'decoy',
@@ -216,16 +216,16 @@ describe('PIN key derivation', () => {
       crypto: globalThis.crypto,
       storage: new MemoryStorage(),
     }
-    const primary = await createPinKey('58301942', dependencies)
+    const primary = await createPinKey('583019', dependencies)
     if (!primary.ok) throw new Error('Primary PIN setup failed.')
-    await configureDecoyPin('24681357', primary, dependencies)
+    await configureDecoyPin('246813', primary, dependencies)
     const deriveSpy = vi.spyOn(globalThis.crypto.subtle, 'deriveKey')
     const decryptSpy = vi.spyOn(globalThis.crypto.subtle, 'decrypt')
 
     for (const [pin, role] of [
-      ['58301942', 'primary'],
-      ['24681357', 'decoy'],
-      ['11111111', null],
+      ['583019', 'primary'],
+      ['246813', 'decoy'],
+      ['111111', null],
     ] as const) {
       deriveSpy.mockClear()
       decryptSpy.mockClear()

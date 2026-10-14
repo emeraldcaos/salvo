@@ -76,7 +76,7 @@ describe('EncryptedToolkitStore', () => {
 
   it('encrypts records at rest and only decrypts with the PIN-derived key', async () => {
     const databaseName = 'encrypted-at-rest-test'
-    const { key, profileId, dependencies } = await makePinKey('58301942')
+    const { key, profileId, dependencies } = await makePinKey('583019')
     const fetchSpy = vi.spyOn(globalThis, 'fetch')
     const store = await EncryptedToolkitStore.open(key, {
       crypto: cryptoProvider,
@@ -99,10 +99,10 @@ describe('EncryptedToolkitStore', () => {
     expect(records[0].ciphertext).toBeInstanceOf(ArrayBuffer)
     database.close()
 
-    const wrongUnlock = await unlockPinKey('58301943', dependencies)
+    const wrongUnlock = await unlockPinKey('583018', dependencies)
     expect(wrongUnlock).toMatchObject({ ok: false, reason: 'incorrect-pin' })
 
-    const wrongKey = await makePinKey('98765432')
+    const wrongKey = await makePinKey('987654')
     const wrongStore = await EncryptedToolkitStore.open(wrongKey.key, {
       crypto: cryptoProvider,
       databaseName,
@@ -129,7 +129,7 @@ describe('EncryptedToolkitStore', () => {
 
   it('rejects a record whose ciphertext has been corrupted', async () => {
     const databaseName = 'encrypted-corruption-test'
-    const { key, profileId } = await makePinKey('58301942')
+    const { key, profileId } = await makePinKey('583019')
     const store = await EncryptedToolkitStore.open(key, {
       crypto: cryptoProvider,
       databaseName,
@@ -168,9 +168,9 @@ describe('EncryptedToolkitStore', () => {
       key: primaryKey,
       profileId: primaryProfileId,
       dependencies,
-    } = await makePinKey('58301942')
+    } = await makePinKey('583019')
     const configured = await configureDecoyPin(
-      '24681357',
+      '246813',
       {
         key: primaryKey,
         profileId: primaryProfileId,
@@ -180,7 +180,7 @@ describe('EncryptedToolkitStore', () => {
     )
     expect(configured).toEqual({ ok: true })
 
-    const decoyIdentity = await unlockPinKey('24681357', dependencies)
+    const decoyIdentity = await unlockPinKey('246813', dependencies)
     if (!decoyIdentity.ok) throw new Error('Decoy PIN did not unlock.')
 
     const primaryStore = await EncryptedToolkitStore.open(primaryKey, {
@@ -224,7 +224,7 @@ describe('EncryptedToolkitStore', () => {
     })
     legacyDatabase.close()
 
-    const { key, profileId } = await makePinKey('58301942')
+    const { key, profileId } = await makePinKey('583019')
     const store = await EncryptedToolkitStore.open(key, {
       crypto: cryptoProvider,
       databaseName,
@@ -252,7 +252,7 @@ describe('EncryptedToolkitStore', () => {
 
   it('moves T07 encrypted records into the primary profile namespace', async () => {
     const databaseName = 'encrypted-v2-migration-test'
-    const { key, profileId } = await makePinKey('58301942')
+    const { key, profileId } = await makePinKey('583019')
     const legacyRecordId = 'opaque-legacy-record'
     const iv = cryptoProvider.getRandomValues(new Uint8Array(12))
     const ciphertext = await cryptoProvider.subtle.encrypt(
@@ -318,7 +318,7 @@ describe('EncryptedToolkitStore', () => {
     })
     legacyDatabase.close()
 
-    const { key, profileId } = await makePinKey('58301942')
+    const { key, profileId } = await makePinKey('583019')
     const failingCrypto = {
       getRandomValues: cryptoProvider.getRandomValues.bind(cryptoProvider),
       subtle: new Proxy(cryptoProvider.subtle, {

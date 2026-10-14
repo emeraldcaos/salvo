@@ -12,12 +12,12 @@ const en: LocaleMessages = {
     decoyPinLabel: 'Second PIN',
     confirmDecoyPinLabel: 'Confirm second PIN',
     decoyPinHint:
-      'The second PIN opens a separate empty profile. Enter 8 to 12 digits different from the PIN you used to unlock.',
+      'The second PIN opens a separate empty profile. Enter 6 digits different from the PIN you used to unlock.',
     decoyPinConfigured: 'PIN saved.',
     pinMismatch: 'The PINs do not match.',
     pinAlreadyUsed: 'Use a different PIN from the one you used to unlock.',
     inputLabel: 'PIN',
-    inputHint: 'Enter 8 to 12 digits.',
+    inputHint: 'Enter 6 digits.',
     recoveryWarning: 'Your PIN cannot be recovered if you forget it.',
     scopeNote:
       'This creates an encryption key. It does not encrypt app content yet.',
@@ -29,7 +29,7 @@ const en: LocaleMessages = {
     unlockAction: 'Unlock',
     lockAction: 'Lock key',
     unlocked: 'Key unlocked in memory for this session.',
-    invalidPin: 'Enter 8 to 12 digits.',
+    invalidPin: 'Enter 6 digits.',
     incorrectPin: 'That PIN did not unlock the key. Try again.',
     lockout: 'Too many incorrect attempts. Try again in {seconds} seconds.',
     alreadyConfigured: 'A PIN key already exists on this device.',
@@ -60,6 +60,8 @@ const en: LocaleMessages = {
   lock: {
     prompt: 'Enter your PIN',
     forgotPin: 'Forgot your PIN? Data cannot be recovered.',
+    deleteLabel: 'Delete',
+    pinDotsLabel: 'PIN entered, {count} digits',
   },
   nav: {
     label: 'Main',
@@ -130,6 +132,7 @@ const en: LocaleMessages = {
     progressLabel: 'Your plan',
     pinDotsLabel: 'PIN length so far',
     deleteLabel: 'Delete',
+    unlockLabel: 'Unlock',
     ink: 'Ink ground',
     mint: 'Mint primary',
     amber: 'Amber caution',

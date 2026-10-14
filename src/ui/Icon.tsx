@@ -61,6 +61,7 @@ const paths: Record<IconName, ReactNode> = {
       <path d="M13 9.5l5 5M18 9.5l-5 5" />
     </>
   ),
+  check: <path d="M5 12.5l4.5 4.5L19 7.5" strokeWidth="2.4" />,
 }
 
 type IconProps = SVGProps<SVGSVGElement> & {

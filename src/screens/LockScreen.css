@@ -1,0 +1,50 @@
+.screen-lock {
+  align-items: stretch;
+}
+
+.screen-lock__heading {
+  margin-top: 56px;
+  text-align: center;
+}
+
+.screen-lock__heading h1 {
+  font-size: 26px;
+}
+
+.screen-lock .ui-pin-dots {
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 18px 0;
+  max-width: 100%;
+  row-gap: 10px;
+}
+
+.screen-lock .ui-keypad {
+  margin: 0 auto;
+  max-width: 360px;
+  width: 100%;
+}
+
+.screen-lock__feedback {
+  color: var(--danger-text);
+  font-size: 14px;
+  font-weight: 700;
+  margin: 0;
+  text-align: center;
+}
+
+.screen-lock__feedback[role='status'] {
+  color: var(--amber);
+}
+
+.screen-lock__footer {
+  margin-top: auto;
+  text-align: center;
+}
+
+.switcher-blank {
+  background: #000;
+  inset: 0;
+  position: fixed;
+  z-index: 100000;
+}

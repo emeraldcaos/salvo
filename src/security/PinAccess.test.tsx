@@ -75,10 +75,10 @@ describe('PinAccess', () => {
 
     fireEvent.click(screen.getByRole('button', { name: 'Manage second PIN' }))
     fireEvent.change(screen.getByLabelText('Second PIN'), {
-      target: { value: '24681357' },
+      target: { value: '246813' },
     })
     fireEvent.change(screen.getByLabelText('Confirm second PIN'), {
-      target: { value: '24681357' },
+      target: { value: '246813' },
     })
     const form = container.querySelector('form')
     if (!form) throw new Error('Second-PIN form was not rendered.')
@@ -86,7 +86,7 @@ describe('PinAccess', () => {
 
     await waitFor(() => {
       expect(pinMocks.configureDecoyPin).toHaveBeenCalledWith(
-        '24681357',
+        '246813',
         primaryIdentity,
       )
       expect(screen.getByText('PIN saved.')).toBeInTheDocument()
@@ -110,10 +110,10 @@ describe('PinAccess', () => {
     ).toBeInTheDocument()
     fireEvent.click(screen.getByRole('button', { name: 'Manage second PIN' }))
     fireEvent.change(screen.getByLabelText('Second PIN'), {
-      target: { value: '24681357' },
+      target: { value: '246813' },
     })
     fireEvent.change(screen.getByLabelText('Confirm second PIN'), {
-      target: { value: '24681357' },
+      target: { value: '246813' },
     })
     const form = container.querySelector('form')
     if (!form) throw new Error('Second-PIN form was not rendered.')
@@ -121,7 +121,7 @@ describe('PinAccess', () => {
 
     await waitFor(() => {
       expect(pinMocks.configureDecoyPin).toHaveBeenCalledWith(
-        '24681357',
+        '246813',
         decoyIdentity,
       )
       expect(screen.getByText('PIN saved.')).toBeInTheDocument()

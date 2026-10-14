@@ -18,18 +18,12 @@
   overflow: auto;
 }
 
-.screen-lock__heading {
-  margin-top: 56px;
-  text-align: center;
-}
-
-.screen-lock__footer {
-  margin-top: auto;
-  text-align: center;
-}
-
 .welcome-language {
   width: 100%;
+}
+
+.app-header--minimal {
+  justify-content: flex-end;
 }
 
 .app-header {

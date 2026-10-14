@@ -36,6 +36,7 @@ export type GalleryMessages = {
   progressLabel: string
   pinDotsLabel: string
   deleteLabel: string
+  unlockLabel: string
   ink: string
   mint: string
   amber: string
@@ -186,8 +187,11 @@ export function ComponentGallery({ messages, onBack }: ComponentGalleryProps) {
         <PinDots filled={pinLength} total={6} label={messages.pinDotsLabel} />
         <Keypad
           deleteLabel={messages.deleteLabel}
+          canSubmit={pinLength === 6}
+          submitLabel={messages.unlockLabel}
           onDigit={() => setPinLength((n) => Math.min(6, n + 1))}
           onDelete={() => setPinLength((n) => Math.max(0, n - 1))}
+          onSubmit={() => setPinLength(0)}
         />
       </section>
 

@@ -5,8 +5,10 @@ const MAX_LOCKOUT_MS = 15 * 60 * 1000
 const VERIFIER_SIZE = 17
 const LEGACY_VERIFICATION_TEXT = 'salvo-pin-key-check-v1'
 
-export const MIN_PIN_LENGTH = 8
-export const MAX_PIN_LENGTH = 12
+/** Fixed passcode length used by the lock keypad and PIN setup. */
+export const PIN_LENGTH = 6
+export const MIN_PIN_LENGTH = PIN_LENGTH
+export const MAX_PIN_LENGTH = PIN_LENGTH
 
 export type PinProfileRole = 'primary' | 'decoy'
 

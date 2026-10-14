@@ -12,9 +12,11 @@ import { WelcomeScreen } from './screens/WelcomeScreen'
 import PinKeyContext from './security/PinKeyContext'
 import { hasPinConfiguration } from './security/pinKey'
 import type { PinIdentity } from './security/pinKey'
+import { useAutoLock } from './security/useAutoLock'
 import { TabBar } from './shell/TabBar'
 import { ComponentGallery } from './ui'
 import './App.css'
+import './screens/LockScreen.css'
 
 function App() {
   const {
@@ -26,6 +28,7 @@ function App() {
     resolveLanguage(navigator.language),
   )
   const [pinIdentity, setPinIdentity] = useState<PinIdentity | null>(null)
+  const [switcherBlank, setSwitcherBlank] = useState(false)
   const requestedPath = usePath()
   const messages = translations[language]
   const unlocked = pinIdentity !== null
@@ -36,6 +39,37 @@ function App() {
     pinConfigured,
     unlocked,
   })
+
+  const lockSession = () => {
+    setPinIdentity(null)
+    navigate(routes.lock, true)
+  }
+
+  useAutoLock({
+    enabled: unlocked,
+    onLock: lockSession,
+  })
+
+  useEffect(() => {
+    const blankAndLock = () => {
+      setSwitcherBlank(true)
+      setPinIdentity((current) => {
+        if (current) navigate(routes.lock, true)
+        return null
+      })
+    }
+    const onVisibility = () => {
+      if (document.visibilityState === 'hidden') blankAndLock()
+      else setSwitcherBlank(false)
+    }
+
+    document.addEventListener('visibilitychange', onVisibility)
+    window.addEventListener('pagehide', blankAndLock)
+    return () => {
+      document.removeEventListener('visibilitychange', onVisibility)
+      window.removeEventListener('pagehide', blankAndLock)
+    }
+  }, [])
 
   useEffect(() => {
     document.documentElement.lang = language
@@ -49,6 +83,8 @@ function App() {
   }, [requestedPath, activeRoute])
 
   const showTabs = unlocked && showsTabBar(activeRoute)
+  const showChrome =
+    activeRoute !== routes.lock && activeRoute !== routes.welcome
 
   let screen: ReactNode
   switch (activeRoute) {
@@ -67,8 +103,7 @@ function App() {
       screen = (
         <LockScreen
           messages={messages}
-          identity={pinIdentity}
-          onIdentityChange={setPinIdentity}
+          onUnlock={(identity) => setPinIdentity(identity)}
         />
       )
       break
@@ -113,12 +148,7 @@ function App() {
       )
       break
     case routes.settings:
-      screen = (
-        <SettingsScreen
-          messages={messages}
-          onLock={() => setPinIdentity(null)}
-        />
-      )
+      screen = <SettingsScreen messages={messages} onLock={lockSession} />
       break
     case routes.verifier:
       screen = (
@@ -148,11 +178,14 @@ function App() {
           : null
       }
     >
+      {switcherBlank ? (
+        <div className="switcher-blank" aria-hidden="true" />
+      ) : null}
       <div className="app-shell">
-        <header className="app-header">
-          <span className="brand">{messages.appName}</span>
-          <div className="header-actions">
-            {activeRoute !== routes.welcome && (
+        {showChrome ? (
+          <header className="app-header">
+            <span className="brand">{messages.appName}</span>
+            <div className="header-actions">
               <div className="language-control">
                 <label htmlFor="shell-language-select">
                   {messages.languageSwitcher.label}
@@ -171,7 +204,22 @@ function App() {
                   ))}
                 </select>
               </div>
-            )}
+              <a
+                className="quick-exit"
+                href={`${import.meta.env.BASE_URL}neutral.html`}
+                onClick={(event) => {
+                  event.preventDefault()
+                  window.location.replace(
+                    `${import.meta.env.BASE_URL}neutral.html`,
+                  )
+                }}
+              >
+                {messages.quickExit}
+              </a>
+            </div>
+          </header>
+        ) : (
+          <div className="app-header app-header--minimal">
             <a
               className="quick-exit"
               href={`${import.meta.env.BASE_URL}neutral.html`}
@@ -185,7 +233,7 @@ function App() {
               {messages.quickExit}
             </a>
           </div>
-        </header>
+        )}
 
         {(offlineReady || needRefresh) && (
           <aside className="pwa-notice" role="status">

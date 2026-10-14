@@ -12,12 +12,12 @@ const es: LocaleMessages = {
     decoyPinLabel: 'Segundo PIN',
     confirmDecoyPinLabel: 'Confirma el segundo PIN',
     decoyPinHint:
-      'El segundo PIN abre un perfil separado y vacío. Escribe de 8 a 12 dígitos distintos del PIN que usaste para desbloquear.',
+      'El segundo PIN abre un perfil separado y vacío. Escribe 6 dígitos distintos del PIN que usaste para desbloquear.',
     decoyPinConfigured: 'PIN guardado.',
     pinMismatch: 'Los PIN no coinciden.',
     pinAlreadyUsed: 'Usa un PIN distinto del que usaste para desbloquear.',
     inputLabel: 'PIN',
-    inputHint: 'Escribe de 8 a 12 dígitos.',
+    inputHint: 'Escribe 6 dígitos.',
     recoveryWarning: 'No podrás recuperar el PIN si lo olvidas.',
     scopeNote:
       'Esto crea una clave de cifrado. Aún no cifra el contenido de la aplicación.',
@@ -29,7 +29,7 @@ const es: LocaleMessages = {
     unlockAction: 'Desbloquear',
     lockAction: 'Bloquear clave',
     unlocked: 'La clave está desbloqueada en la memoria durante esta sesión.',
-    invalidPin: 'Escribe de 8 a 12 dígitos.',
+    invalidPin: 'Escribe 6 dígitos.',
     incorrectPin: 'Ese PIN no desbloqueó la clave. Inténtalo de nuevo.',
     lockout:
       'Hubo demasiados intentos incorrectos. Inténtalo de nuevo en {seconds} segundos.',
@@ -61,6 +61,8 @@ const es: LocaleMessages = {
   lock: {
     prompt: 'Escribe tu PIN',
     forgotPin: '¿Olvidaste tu PIN? No se pueden recuperar los datos.',
+    deleteLabel: 'Borrar',
+    pinDotsLabel: 'PIN escrito, {count} dígitos',
   },
   nav: {
     label: 'Principal',
@@ -131,6 +133,7 @@ const es: LocaleMessages = {
     progressLabel: 'Tu plan',
     pinDotsLabel: 'Longitud del PIN hasta ahora',
     deleteLabel: 'Borrar',
+    unlockLabel: 'Desbloquear',
     ink: 'Fondo tinta',
     mint: 'Menta principal',
     amber: 'Ámbar de aviso',
